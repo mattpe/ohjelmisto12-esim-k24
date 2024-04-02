@@ -8,21 +8,20 @@
 ## Client-server-arkkitehtuuri
 
 ```mermaid
-graph LR
+graph TD
 
 subgraph Client
    A[HTML/CSS/JS user Interface] <-- Event & DOM manipulation --> B
-   B[JS client-side Logic] -- HTTP --> C[Request to Server]
+   B[JS client-side Logic] --> C[Request to Server]
 end
 
 subgraph Server
-   C --> D[Server-side Logic]
    D <-- SQL --> E[(Database)]
-   D -- HTTP --> F[Response to Client]
-
+   D --> F[Response to Client]
 end
 
-F --> B
+C -- HTTP --> D[Server-side Logic]
+F -- HTTP --> B
 ```
 
 ---
@@ -32,7 +31,7 @@ Sekvenssikaavio
 ```mermaid
 sequenceDiagram
     participant browser
-    participant server as server-side app
+    participant server as server-side app (flask)
     participant db as database
 
     browser->>server: GET https://app.example.com/
@@ -48,7 +47,7 @@ sequenceDiagram
     activate browser
     Note right of browser: The browser starts executing the JS code that fetches some data from the server
 
-    browser->>server: GET https://app.example.com/endpoint/resource
+    browser->>server: GET https://app.example.com/resource/endpoint
     deactivate browser
     activate server
     server->>db: SQL query
