@@ -8,10 +8,17 @@ function locationError (error) {
 }
 
 const locationOptions = {
-  timeout: 3000
+  timeout: 5000
 };
 
-navigator.geolocation.getCurrentPosition(locationSuccess, locationError, locationOptions);
+// käytetään tapahtumankäsittelijänä, kun p-näppäintä painetaan
+function locateUser(event) {
+  console.log('näppäintapahtuma', event);
+  if (event.key === 'p') {
+    navigator.geolocation.getCurrentPosition(locationSuccess, locationError, locationOptions);
+  }
+}
+
 console.log('Moro!');
 
 // DOM-kikkailua
@@ -23,7 +30,8 @@ pElement.textContent = 'muokattu';
 const newP = document.createElement('p');
 newP.textContent = 'uusi kappale';
 section2.append(newP);
-newP.style = 'color: blue';
+// newP.style = 'color: blue';
+newP.classList.add('blue');
 
 const thirdSection = document.querySelector('#third-section');
 thirdSection.innerHTML = `
@@ -31,3 +39,43 @@ thirdSection.innerHTML = `
     <p>
         Tässä taas tekstiä.
     </p>`;
+
+// Tapahtumankäsittely
+
+const buttonElement = document.querySelector('button');
+buttonElement.addEventListener('click', function (event) {
+  // pysäytetään click-eventin eteneminen dom-puussa tähän
+  event.stopPropagation();
+  console.log('button clicked');
+  //newP.classList.add('red');
+  //newP.classList.remove('blue');
+  newP.classList.toggle('red');
+  newP.classList.toggle('blue');
+});
+
+// näppäimistö
+document.addEventListener('keypress', locateUser);
+
+// hiiren liikutus
+//document.addEventListener('mousemove', (event) => {
+//  console.log(event);
+//});
+
+// kontekstimenun esto
+document.addEventListener('contextmenu', function (event) {
+  console.log(event);
+  event.preventDefault();
+  alert('ähäkutti!');
+});
+
+// tekstikappaleklikki
+newP.addEventListener('click', function() {
+  newP.textContent = 'klikkasit tähän';
+});
+
+// koko dokumentin klikkitapahtuma
+document.addEventListener('click', function (event){
+  console.log('sivua klikattu, kohde:', event.target, event.currentTarget.tagName);
+  // klikkauksen kohde-elementin käsittely
+  event.target.textContent = 'klikkasit tätä';
+});
