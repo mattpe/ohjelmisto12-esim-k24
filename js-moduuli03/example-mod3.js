@@ -70,12 +70,13 @@ document.addEventListener('contextmenu', function (event) {
 
 // tekstikappaleklikki
 newP.addEventListener('click', function() {
-  newP.textContent = 'klikkasit tähän';
+  newP.textContent = 'paina p paikantaaksesi ';
 });
 
 // koko dokumentin klikkitapahtuma
 document.addEventListener('click', function (event){
   console.log('sivua klikattu, kohde:', event.target, event.currentTarget.tagName);
   // klikkauksen kohde-elementin käsittely
-  event.target.textContent = 'klikkasit tätä';
-});
+  // event.target.textContent = 'klikkasit tätä';
+  event.target.classList.toggle('red');
+}, false);
